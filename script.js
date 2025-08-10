@@ -221,7 +221,7 @@ function setupMobileControls() {
 }
 
 function generateObstacle() {
-    const type = obstacleImgObjects[Math.floor(Math.random() * obstacleImgObjects.length)].type;
+    const type = obstacleImgObjects[Math.floor(Math.random() * obstacleImagePaths.length)].type;
     let width = ROAD_WIDTH * 0.2, height = width * 1.5;
     
     if (type === "truck") {
@@ -232,19 +232,11 @@ function generateObstacle() {
         height = width * 2.0;
     }
 
-    // Definir carril y dirección
-    const isLeftLane = Math.random() < 0.5;
-    let lane, direction;
-
-    if (isLeftLane) {
-        // Carril izquierdo: Bajan (aparecen arriba)
-        lane = ROAD_LEFT + 10 + Math.random() * (ROAD_WIDTH/2 - width - 20);
-        direction = "down";
-    } else {
-        // Carril derecho: Suben (aparecen abajo)
-        lane = ROAD_CENTER + 10 + Math.random() * (ROAD_WIDTH/2 - width - 20);
-        direction = "up";
-    }
+    // Genera obstáculos en TODA la carretera (incluyendo bordes)
+    const lane = ROAD_LEFT + Math.random() * (ROAD_WIDTH - width);
+    
+    // Dirección aleatoria (50% suben, 50% bajan)
+    const direction = Math.random() < 0.5 ? "down" : "up";
 
     obstacles.push({
         x: lane,
@@ -272,7 +264,6 @@ function updateObstacles() {
     for (let i = obstacles.length - 1; i >= 0; i--) {
         let obs = obstacles[i];
         
-        // Movimiento vertical según dirección
         obs.y += obs.direction === "down" ? obs.speed : -obs.speed;
         
         ctx.save();

@@ -1,4 +1,4 @@
-// Configuración inicial del canvas
+requiero que me lo pases completo que yo no se como hacerlo: // Configuración inicial del canvas
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 

@@ -10,26 +10,22 @@
     <div id="startScreen">
         <h1>CARRERAS MÓVIL</h1>
         <div id="instructions">
-            Usa los botones para esquivar obstáculos<br>
-            Completa los 10 niveles!
+            Usa los 4 botones para moverte en todas direcciones<br>
+            ¡Esquiva los obstáculos y completa los 10 niveles!
         </div>
         <button id="startButton">JUGAR</button>
     </div>
 
     <div id="controls">
+        <button id="upBtn">↑</button>
         <button id="leftBtn">←</button>
         <button id="rightBtn">→</button>
+        <button id="downBtn">↓</button>
     </div>
     <canvas id="gameCanvas"></canvas>
     <script src="script.js"></script>
     <script>
         document.getElementById("startButton").addEventListener("click", function() {
-            document.getElementById("startScreen").style.display = "none";
-            window.dispatchEvent(new Event("resize"));
-        });
-    </script>
-</body>
-</html>
             document.getElementById("startScreen").style.display = "none";
             window.dispatchEvent(new Event("resize"));
         });

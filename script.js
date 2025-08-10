@@ -232,22 +232,17 @@ function generateObstacle() {
         height = width * 2.0;
     }
 
-    const directionOptions = [
-        { dir: "down", startY: -height, lane: ROAD_LEFT + Math.random() * (ROAD_WIDTH - width) },
-        { dir: "up", startY: GAME_HEIGHT, lane: ROAD_LEFT + Math.random() * (ROAD_WIDTH - width) },
-        { dir: "left", startX: GAME_WIDTH, startY: Math.random() * GAME_HEIGHT * 0.7 },
-        { dir: "right", startX: -width, startY: Math.random() * GAME_HEIGHT * 0.7 }
-    ];
-    
-    const selected = directionOptions[Math.floor(Math.random() * directionOptions.length)];
+    // Solo direcciones verticales (arriba/abajo)
+    const direction = Math.random() < 0.5 ? "down" : "up";
+    const lane = ROAD_LEFT + Math.random() * (ROAD_WIDTH - width);
     
     obstacles.push({
-        x: ["left", "right"].includes(selected.dir) ? selected.startX : selected.lane,
-        y: ["up", "down"].includes(selected.dir) ? selected.startY : selected.startY,
+        x: lane,
+        y: direction === "up" ? GAME_HEIGHT : -height,
         width, height,
         img: obstacleImgObjects.find(o => o.type === type).img,
         speed: (1.2 + (level * 0.15)) * subLevelSpeed,
-        direction: selected.dir,
+        direction: direction,
         type
     });
 }
@@ -267,12 +262,8 @@ function updateObstacles() {
     for (let i = obstacles.length - 1; i >= 0; i--) {
         let obs = obstacles[i];
         
-        switch(obs.direction) {
-            case "down": obs.y += obs.speed; break;
-            case "up": obs.y -= obs.speed; break;
-            case "left": obs.x -= obs.speed; break;
-            case "right": obs.x += obs.speed; break;
-        }
+        // Movimiento solo vertical
+        obs.y += obs.direction === "down" ? obs.speed : -obs.speed;
         
         ctx.save();
         ctx.imageSmoothingEnabled = true;
@@ -285,8 +276,7 @@ function updateObstacles() {
             return;
         }
 
-        if ((obs.y + obs.height < 0) || (obs.y > GAME_HEIGHT) || 
-            (obs.x + obs.width < 0) || (obs.x > GAME_WIDTH)) {
+        if ((obs.y + obs.height < 0) || (obs.y > GAME_HEIGHT)) {
             obstacles.splice(i, 1);
         }
     }

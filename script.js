@@ -1,4 +1,4 @@
-requiero que me lo pases completo que yo no se como hacerlo: // Configuración inicial del canvas
+// Configuración inicial del canvas
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
@@ -232,13 +232,20 @@ function generateObstacle() {
         height = width * 2.0;
     }
 
-    // Carril izquierdo (bajan) - Carril derecho (suben)
+    // Definir carril y dirección
     const isLeftLane = Math.random() < 0.5;
-    const direction = isLeftLane ? "down" : "up";
-    const lane = isLeftLane ? 
-        ROAD_LEFT + Math.random() * (ROAD_CENTER - ROAD_LEFT - width) :
-        ROAD_CENTER + Math.random() * (ROAD_RIGHT - ROAD_CENTER - width);
-    
+    let lane, direction;
+
+    if (isLeftLane) {
+        // Carril izquierdo: Bajan (aparecen arriba)
+        lane = ROAD_LEFT + 10 + Math.random() * (ROAD_WIDTH/2 - width - 20);
+        direction = "down";
+    } else {
+        // Carril derecho: Suben (aparecen abajo)
+        lane = ROAD_CENTER + 10 + Math.random() * (ROAD_WIDTH/2 - width - 20);
+        direction = "up";
+    }
+
     obstacles.push({
         x: lane,
         y: direction === "up" ? GAME_HEIGHT : -height,

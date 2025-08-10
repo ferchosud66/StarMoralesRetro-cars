@@ -232,9 +232,12 @@ function generateObstacle() {
         height = width * 2.0;
     }
 
-    // Solo direcciones verticales (arriba/abajo)
-    const direction = Math.random() < 0.5 ? "down" : "up";
-    const lane = ROAD_LEFT + Math.random() * (ROAD_WIDTH - width);
+    // Carril izquierdo (bajan) - Carril derecho (suben)
+    const isLeftLane = Math.random() < 0.5;
+    const direction = isLeftLane ? "down" : "up";
+    const lane = isLeftLane ? 
+        ROAD_LEFT + Math.random() * (ROAD_CENTER - ROAD_LEFT - width) :
+        ROAD_CENTER + Math.random() * (ROAD_RIGHT - ROAD_CENTER - width);
     
     obstacles.push({
         x: lane,
@@ -262,7 +265,7 @@ function updateObstacles() {
     for (let i = obstacles.length - 1; i >= 0; i--) {
         let obs = obstacles[i];
         
-        // Movimiento solo vertical
+        // Movimiento vertical según dirección
         obs.y += obs.direction === "down" ? obs.speed : -obs.speed;
         
         ctx.save();
